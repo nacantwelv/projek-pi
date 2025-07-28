@@ -1,0 +1,194 @@
+/* ========== Logo & Hero Image ========== */
+.img-logo {
+  height: auto;
+  width: 250px;
+  padding-left: 50px;
+}
+
+.img-hero {
+  height: auto;
+  width: 400px;
+  margin-right: 200px;
+  margin-top: 70px;
+}
+.img-deteksi {
+  height: auto;
+  width: 40px;
+}
+/* ========== Button Styles ========== */
+.btn-deteksi {
+  color: white;
+  background-color: #B0D553;
+  box-shadow: 5px 5px 5px rgba(176, 213, 83, 0.5);
+  font-family: 'Poppins', sans-serif;
+  font-size: 15pt;
+  font-weight: 600;
+}
+
+.btn-deteksi:hover {
+  background-color: #c2fa33;
+  box-shadow: 0 6px 16px rgba(193, 246, 60, 0.6);
+  transform: translateY(-2px);
+}
+
+.btn-mulai-deteksi {
+  color: white;
+  background-color: #FCED25;
+  box-shadow: 5px 5px 5px rgba(176, 213, 83, 0.5);
+  font-family: 'Poppins', sans-serif;
+  font-size: 15pt;
+  font-weight: 600;
+}
+
+.btn-mulai-deteksi:hover {
+  background-color: #dfd216;
+  box-shadow: 0 6px 16px rgba(255, 252, 83, 0.803);
+  transform: translateY(-2px);
+}
+
+.btn-mulai {
+  color: white;
+  background-color: #217756;
+  box-shadow: 5px 5px 5px rgba(176, 213, 83, 0.5);
+  font-family: 'Poppins', sans-serif;
+  font-size: 15pt;
+  font-weight: 600;
+  margin-left: 150px;
+}
+
+.btn-mulai:hover {
+  background-color: #50e6af;
+  box-shadow: 0 6px 16px rgba(171, 221, 47, 0.6);
+  transform: translateY(-2px);
+}
+
+/* ========== Webcam Container ========== */
+#webcam-container {
+  width: 540px;
+  height: 410px;
+  border-radius: 10px;
+  border: 5px solid #2F6B2E;
+  background-color: #393939;
+  margin-left: 150px;
+}
+
+/* ========== Section Background ========== */
+.beranda-section {
+  background-image: url('../src/assets/Brush.png');
+  background-size: cover;
+  background-position: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.deteksi-section {
+  background-image: url('../src/assets/Brush.png');
+  transform: rotate(180deg);
+  background-size: cover;
+  background-position: center;
+  background-color: #28a745;
+  height: auto;
+  width: 100vw;
+}
+
+#tentang {
+  background-color: #4AAE43;
+}
+
+.content-rotate-fix {
+  transform: rotate(180deg);
+  padding-top: 100px;
+}
+
+/* ========== Typography ========== */
+.text-beranda-1,
+.text-deteksi-1 {
+  font-size: 45pt;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.text-beranda-1 {
+  padding-left: 150px;
+}
+
+
+.text-beranda-2,
+.text-deteksi-2 {
+  font-size: 25pt;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+}
+
+.text-beranda-2 {
+  margin-left: 150px;
+}
+.text-deteksi-1,
+.text-deteksi-2 {
+  margin-left: 20px;
+}
+/* ========== Responsive / Mobile View ========== */
+@media (max-width: 768px) {
+  .img-logo {
+    padding-left: 4px;
+    height: auto;
+    width: 200px;
+  }
+
+  .img-hero {
+    height: auto;
+    width: 60%;
+    margin-top: -100px;
+    margin-right: 10px;
+  }
+
+  .btn-mulai {
+    margin-left: 50px;
+    margin-top: 10px;
+  }
+
+  .beranda-section,
+  .deteksi-section {
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: bottom;
+  }
+
+  .text-beranda-1 {
+    font-size: 30pt;
+    padding: 0 50px;
+  }
+
+  .text-deteksi-1 {
+    font-size: 30pt;
+    padding: 0 50px;
+  }
+
+  .text-beranda-2 {
+    font-size: 15pt;
+    margin: 0 50px;
+  }
+
+  .text-deteksi-2 {
+    font-size: 15pt;
+    margin: 0 20px;
+  }
+
+  #webcam-container {
+    width: 340px;
+    height: 260px;
+    margin-left: 0;
+  }
+
+  .btn-mulai:hover {
+    background-color: #50e6af;
+    box-shadow: 0 6px 16px rgba(171, 221, 47, 0.6);
+    transform: translateY(-2px);
+  }
+
+  .btn-mulai-deteksi:hover {
+    background-color: #dfd216;
+    box-shadow: 0 6px 16px rgba(255, 252, 83, 0.803);
+    transform: translateY(-2px);
+  }
+}
