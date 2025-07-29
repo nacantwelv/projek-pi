@@ -1,7 +1,30 @@
+import { useState, useEffect } from 'react'
 import logoApps from '../assets/logo potato.png'
 import '../App.css'
 
 const Navbar = () => {
+  const [activeLink, setActiveLink] = useState('beranda')
+
+  // Tambahkan scroll listener untuk ubah activeLink berdasarkan scroll posisi
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const deteksi = document.getElementById("deteksi")
+      const tentang = document.getElementById("tentang")
+
+      if (tentang && scrollY >= tentang.offsetTop - 100) {
+        setActiveLink('tentang')
+      } else if (deteksi && scrollY >= deteksi.offsetTop - 100) {
+        setActiveLink('deteksi')
+      } else {
+        setActiveLink('beranda')
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
     <nav className="navbar navbar-expand-lg fixed-top bg-white shadow">
       <div className="container-xxl navigasi">
@@ -22,23 +45,32 @@ const Navbar = () => {
 
         <div className="collapse navbar-collapse px-5" id="navbarNavAltMarkup">
           <div className="navbar-nav ms-auto">
-            <a className="nav-link active text-success fw-bold" aria-current="page" href="#">
+            <a
+              className={`nav-link fw-bold ${activeLink === 'beranda' ? 'text-success active' : ''}`}
+              href="#"
+              onClick={() => setActiveLink('beranda')}
+            >
               Beranda
             </a>
-            <a className="nav-link fw-bold" href="#deteksi">
+            <a
+              className={`nav-link fw-bold ${activeLink === 'deteksi' ? 'text-success active' : ''}`}
+              href="#deteksi"
+              onClick={() => setActiveLink('deteksi')}
+            >
               Deteksi
             </a>
-            <a className="nav-link fw-bold" href="#tentang">
+            <a
+              className={`nav-link fw-bold ${activeLink === 'tentang' ? 'text-success active' : ''}`}
+              href="#tentang"
+              onClick={() => setActiveLink('tentang')}
+            >
               Tentang Kami
             </a>
           </div>
         </div>
       </div>
     </nav>
-    
-
-  );
-  
+  )
 }
 
 export default Navbar

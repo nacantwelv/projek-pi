@@ -4,27 +4,44 @@ import icondaun from '../assets/icon-daun.png'
 import iconceklis from '../assets/icon-ceklis.png'
 import heroKentang2 from '../assets/hero-kentang2.png'
 
-// Fungsi untuk mengambil deskripsi & solusi berdasarkan label
 const getKeteranganByLabel = (label) => {
   switch (label) {
-    case "Healthy":
+    case "Healthy Leaf":
       return {
-        deskripsi: "Tanaman dalam kondisi sehat. Tidak ditemukan tanda-tanda penyakit.",
-        solusi: "Pertahankan pola perawatan seperti penyiraman, pemupukan, dan pengawasan rutin."
+        deskripsi: "Daun sehat berwarna hijau rata, tidak ada bercak atau lubang, dan tidak mudah layu. Cara Menjaga Daun Tetap Sehat",
+        saran: "Gunakan pupuk seimbang (NPK) agar tanaman kuat.",
+        saran2: "Lakukan rotasi tanaman, jangan tanam kentang terus-menerus di tempat yang sama",
+        saran3: "⁠Cek daun secara rutin — kalau ada bercak, langsung buang.",
+        saran4: "⁠Semprot air di pagi hari, hindari daun tetap basah di malam hari.",
+        solusi: ""
       }
     case "Early Blight":
       return {
-        deskripsi: "Early Blight biasanya disebabkan oleh jamur Alternaria solani, menyerang daun tua terlebih dahulu.",
-        solusi: "Buang daun yang terinfeksi, gunakan fungisida berbahan aktif seperti chlorothalonil, dan hindari kelembaban berlebih."
+        deskripsi: "Penyakit ini disebabkan oleh jamur Alternaria solani, yang menyerang daun kentang tua. Muncul bercak bulat berwarna cokelat gelap dengan lingkaran seperti mata banteng. Jika dibiarkan, bisa menyebabkan daun rontok dan gagal panen.",
+        saran: "Jangan tanam terlalu rapat agar tanaman tidak lembap.",
+        saran2: "Gunakan bibit sehat dan tanah yang tidak terlalu basah",
+        saran3: "Semprot dengan jamur baik (Trichoderma) atau cairan dari daun mimba (neem) untuk mencegah jamur jahat tumbuh.",
+        saran4: "",
+        solusi: "⁠Segera buang dan bakar daun yang terkena.",
+        solusi2: "Semprotkan obat anti jamur (fungisida) seperti chlorothalonil atau carbendazim + mancozeb sesuai dosis yang dianjurkan di label."
       }
     case "Late Blight":
       return {
-        deskripsi: "Late Blight disebabkan oleh Phytophthora infestans, menyebar cepat saat udara lembap dan dingin.",
-        solusi: "Gunakan fungisida sistemik, perbaiki drainase lahan, dan hindari penyiraman dari atas pada malam hari."
+        deskripsi: "Penyakit ini disebabkan oleh jamur air bernama Phytophthora infestans. Biasanya muncul saat cuaca lembap dan dingin. Gejalanya: daun jadi cokelat kehitaman, cepat layu, dan menyebar ke batang atau umbi.",
+        saran: "Gunakan bibit unggul yang tahan penyakit.",
+        saran2: "Jaga jarak tanam dan hindari penyiraman berlebihan.",
+        saran3: "Bersihkan sisa daun dan batang setelah panen.",
+        saran4: "",
+        solusi: "Cabut dan bakar tanaman yang parah agar tidak menular",
+        solusi2: "Semprot fungisida seperti metalaxyl + mancozeb saat muncul gejala awal"
       }
     default:
       return {
         deskripsi: "Tidak diketahui.",
+        saran: "",
+        saran2: "",
+        saran3: "",
+        saran4: "",
         solusi: "Silakan coba ulangi atau pastikan kualitas gambar baik."
       }
   }
@@ -37,14 +54,18 @@ const Deteksi = () => {
   const [prediction, setPrediction] = useState("")
   const [confidence, setConfidence] = useState("")
   const [deskripsi, setDeskripsi] = useState("")
+  const [saran, setSaran] = useState("")
+  const [saran2, setSaran2] = useState("")
+  const [saran3, setSaran3] = useState("")
+  const [saran4, setSaran4] = useState("")
   const [solusi, setSolusi] = useState("")
+  const [solusi2, setSolusi2] = useState("")
   const [cameraOn, setCameraOn] = useState(false)
   const [loading, setLoading] = useState(false)
   const [classes, setClasses] = useState([])
 
-  const URL = "/model/" // Sesuaikan path folder model di public/
+  const URL = "/model/"
 
-  // Load model saat komponen mount
   useEffect(() => {
     const loadModel = async () => {
       try {
@@ -60,7 +81,6 @@ const Deteksi = () => {
     loadModel()
   }, [])
 
-  // Start kamera
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true })
@@ -72,13 +92,11 @@ const Deteksi = () => {
     }
   }
 
-  // Stop kamera
   const stopCamera = () => {
     streamRef.current?.getTracks().forEach((track) => track.stop())
     setCameraOn(false)
   }
 
-  // Tangkap frame dari video ke canvas
   const captureImage = () => {
     const canvas = document.createElement("canvas")
     canvas.width = videoRef.current.videoWidth
@@ -88,7 +106,6 @@ const Deteksi = () => {
     return canvas
   }
 
-  // Prediksi langsung dengan model lokal
   const sendToAPI = async () => {
     const canvas = captureImage()
     setLoading(true)
@@ -96,11 +113,15 @@ const Deteksi = () => {
     setConfidence("")
     setDeskripsi("")
     setSolusi("")
+    setSolusi2("")
+    setSaran("")
+    setSaran2("")
+    setSaran3("")
+    setSaran4("")
 
     try {
       if (!model) throw new Error("Model belum diload")
 
-      // model.predict mengembalikan array {className, probability}
       const predictionResult = await model.predict(canvas)
       const highest = predictionResult.reduce((prev, current) =>
         prev.probability > current.probability ? prev : current
@@ -109,10 +130,14 @@ const Deteksi = () => {
       setPrediction(highest.className)
       setConfidence((highest.probability * 100).toFixed(2) + "%")
 
-      // Ambil deskripsi & solusi
       const keterangan = getKeteranganByLabel(highest.className)
       setDeskripsi(keterangan.deskripsi)
+      setSaran(keterangan.saran)
+      setSaran2(keterangan.saran2)
+      setSaran3(keterangan.saran3)
+      setSaran4(keterangan.saran4)
       setSolusi(keterangan.solusi)
+      setSolusi2(keterangan.solusi2 || "")
 
     } catch (err) {
       console.error("Gagal memprediksi gambar:", err)
@@ -193,16 +218,30 @@ const Deteksi = () => {
                         <div className="col-9 ps-0 " style={{textAlign: "justify"}}>{deskripsi}</div>
                       </div>
                       <br />
+                      {saran && (
                       <div className="row text-style text-deskrip mb-1">
                         <div className="col-12 fw-bold">Pencegahan</div>
                         <div className="col-2 pe-0"><img src={icondaun} alt="" className="img-fluid " style={{ maxWidth: '40px' }}/></div>
-                        <div className="col-9 ps-0" style={{textAlign: "justify"}}>{solusi}</div>
+                        <div className="col-9 ps-0" style={{ textAlign: "justify" }}>
+                        <p>- {saran}</p>
+                        {saran2 && <p>- {saran2}</p>}
+                        {saran3 && <p>- {saran3}</p>}
+                        {saran4 && <p>- {saran4}</p>}
                       </div>
-                      <div className="row text-style text-deskrip mb-1">
-                        <div className="col-12 fw-bold">Pengendaliaan saat terjadi</div>
-                        <div className="col-2 pe-0"><img src={icondaun} alt="" className="img-fluid " style={{ maxWidth: '40px' }}/></div>
-                        <div className="col-9 ps-0 mb-5" style={{textAlign: "justify"}}>{solusi}</div>
                       </div>
+                        
+                      )}
+                      {solusi && (
+                        <div className="row text-style text-deskrip mb-1">
+                          <div className="col-12 fw-bold">Solusi saat terjadi</div>
+                          <div className="col-2 pe-0"><img src={icondaun} alt="" className="img-fluid " style={{ maxWidth: '40px' }}/></div>
+                          <div className="col-9 ps-0 mb-5" style={{textAlign: "justify"}}>
+                            <p>- {solusi}</p>
+                            {solusi2 && <p>- {solusi2}</p>}
+                          </div>
+                        </div>
+                        
+                      )}
                     </div>
                   </div>
                 </div>
