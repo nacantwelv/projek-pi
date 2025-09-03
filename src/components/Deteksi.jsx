@@ -83,7 +83,9 @@ const Deteksi = () => {
 
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: "environment" } } // gunakan kamera belakang
+      })
       videoRef.current.srcObject = stream
       streamRef.current = stream
       setCameraOn(true)
