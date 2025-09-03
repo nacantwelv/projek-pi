@@ -81,18 +81,40 @@ const Deteksi = () => {
     loadModel()
   }, [])
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: { ideal: "environment" } } // gunakan kamera belakang
-      })
+const startCamera = async () => {
+  try {
+    const constraints = {
+      video: {
+        facingMode: { ideal: "environment" } // utamakan kamera belakang
+      },
+      audio: false
+    }
+
+    const stream = await navigator.mediaDevices.getUserMedia(constraints)
+    if (videoRef.current) {
       videoRef.current.srcObject = stream
+    }
+    streamRef.current = stream
+    setCameraOn(true)
+  } catch (err) {
+    console.error("Error accessing camera:", err)
+    alert("Kamera belakang tidak tersedia, coba gunakan kamera depan.")
+    try {
+      // fallback ke kamera depan
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user" },
+        audio: false
+      })
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream
+      }
       streamRef.current = stream
       setCameraOn(true)
-    } catch (err) {
-      console.error("Error accessing camera:", err)
+    } catch (err2) {
+      console.error("Tidak bisa akses kamera sama sekali:", err2)
     }
   }
+}
 
   const stopCamera = () => {
     streamRef.current?.getTracks().forEach((track) => track.stop())

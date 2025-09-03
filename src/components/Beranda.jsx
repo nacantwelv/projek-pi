@@ -12,7 +12,7 @@ const Beranda = () => (
           </p>
           <a href="#deteksi" className="btn btn-mulai text-white w-25 mb-5">Mulai!</a>
         </div>
-        <div className="col-12 col-md-6 text-end">
+        <div className="col-12 col-md-6 text-end z-1">
           <img src={imgHero} alt="Gambar Daun Kentang" className="img-hero text-end" />
         </div>
       </div>
